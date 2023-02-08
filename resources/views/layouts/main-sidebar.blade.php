@@ -67,6 +67,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{route('Designations.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p>
+                        Designations
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{route('Tickets.index')}}" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>

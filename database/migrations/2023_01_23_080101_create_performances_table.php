@@ -15,6 +15,10 @@ class CreatePerformancesTable extends Migration
     {
         Schema::create('performances', function (Blueprint $table) {
             $table->id();
+            $table->string('employee_id');
+            $table->string('date');
+            $table->string('status');
+            $table->integer('progress');
             $table->timestamps();
         });
     }

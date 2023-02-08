@@ -26,9 +26,17 @@ Route::get('/Board','HomeController@Board')->name('Board');
 Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('Employees', 'EmployeeController');
 Route::post('/Employees/search','EmployeeController@search')->name('Employees.search');
+Route::post('/Employees/upload','EmployeeController@upload')->name('Employees.upload');
+
 Route::resource('Attendances', 'AttendanceController');
 Route::resource('Companys', 'CompanyController');
+
 Route::resource('Departments', 'DepartmentController');
+Route::post('/Departments/search','DepartmentController@search')->name('Departments.search');
+
+Route::resource('Designations', 'DesignationController');
+Route::post('/Designations/search','DesignationController@search')->name('Designations.search');
+
 Route::resource('Events', 'EventController');
 Route::resource('Holidays', 'HolidayController');
 Route::resource('Leaves', 'LeaveController');

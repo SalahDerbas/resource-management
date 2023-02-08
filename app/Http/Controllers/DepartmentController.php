@@ -14,18 +14,11 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        return view('Admin.Departments.index');
+        $Departments = Department::all();
+        $search = '';
+        return view('Admin.Departments.index' , compact('Departments' , 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,31 +28,23 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'department' => 'required|max:255',
+            ]);
+            $Departments = new Department();
+            $Departments->department = $request->department;
+            $Departments->title = $request->title;
+            $Departments->save();
+            return redirect()->route('Departments.index')->with('message','Data added Successfully');
+
+        }
+        catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Department  $department
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Department $department)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Department  $department
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Department $department)
-    {
-        //
-    }
-
+ 
     /**
      * Update the specified resource in storage.
      *
@@ -67,9 +52,22 @@ class DepartmentController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Department $department)
+    public function update(Request $request)
     {
-        //
+        try {
+            $validated = $request->validate([
+                'department' => 'required|max:255',
+            ]);
+            $Departments = Department::findOrFail($request->id);
+            $Departments->department = $request->department;
+            $Departments->title = $request->title;
+            $Departments->save();
+            return redirect()->route('Departments.index')->with('message','Data added Successfully');
+
+        }
+        catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -78,8 +76,24 @@ class DepartmentController extends Controller
      * @param  \App\Department  $department
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Department $department)
+    public function destroy(Request $request)
     {
-        //
+        $Departments = Department::findOrFail($request->id)->delete();
+        return redirect()->route('Departments.index')->with('warning','Data delete Successfully');
     }
+
+    public function search(Request $request)
+    {
+        $searchQuery = trim($request->search);
+        $requestData = ['department','title'];
+
+        $Departments = Department::where(function ($q) use ($requestData, $searchQuery) {
+              foreach ($requestData as $field)
+                  $q->orWhere($field, 'like', "%{$searchQuery}%");
+          })->get();
+        $search = $request->search;
+          return view('Admin.Departments.index',compact('Departments' , 'search'));
+
+    }
+
 }

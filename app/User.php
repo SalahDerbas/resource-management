@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Department;
+use App\Designation;
 
 class User extends Authenticatable
 {
@@ -36,4 +38,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
+    public function designation(){
+        return $this->belongsTo(Designation::class);
+    }
+
+
 }
